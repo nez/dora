@@ -14,7 +14,7 @@
             [clj-time.core :as t]))
 
 (def mirrored-files
-  {:proyectos-opa "http://www.transparenciapresupuestaria.gob.mx/work/models/PTP/DatosAbiertos/OPA/2016/Proyectos_OPA.csv"
+  {:proyectos-opa "http://www.transparenciapresupuestaria.gob.mx/work/models/PTP/OPA/datosabiertos/proyectos_opa.csv"
    :prog-avance-de-indicadores "http://www.transparenciapresupuestaria.gob.mx/work/models/PTP/DatosAbiertos/Calendarios_MIR_2008-2014/prog_avance_de_indicadores.csv"})
 
 (defn apify-files []
