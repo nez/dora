@@ -48,7 +48,9 @@
   (str/join (take 100 (standard-name (:name resource)))))
 
 (defn mirror-dir [resource]
-  (str refineria-dir (resource-name resource)))
+  (let [eldir (str refineria-dir (resource-name resource))]
+    (sh "mkdir" eldir)
+    eldir))
 
 (defn clone-mirror [resource]
   (let [le-name (resource-name resource)]
