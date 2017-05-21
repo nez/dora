@@ -84,6 +84,7 @@
   (copy (:url resource)
        (resource-file resource)))
 
+(defn copy-resources [] (map copy-resource (db :resources)))
 (defn refina-csv [file]
   (println "Digitalizando: " file)
   (csv file (digitalize (csv file))))
