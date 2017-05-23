@@ -113,6 +113,10 @@
     (update-adela)
     (dc-update)]))
 
+(defn metrics []
+  (doall-recur
+   [(update-db :ckan-organizations ckan-organizations)]))
+
 (defn today-at
   ([] (today-at 0 0 0 0))
   ([h] (today-at h 0 0 0))

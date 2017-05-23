@@ -107,8 +107,8 @@
 
 (defn ckan-organizations
   "list of organizations from a list of datasets"
-  [datasets]
-  (distinct (map :organization datasets)))
+  []
+  (api "action/organization_list"))
 
 (defn resources-from-dataset
   "list of resources, with organization name and dataset id"
