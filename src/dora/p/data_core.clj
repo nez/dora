@@ -115,7 +115,7 @@
 
 (defn metrics []
   (doall-recur
-   [(update-db :ckan-organizations ckan-organizations)]))
+   [(update-db :ckan-organizations (map #(hash-map :name %) ckan-organizations))]))
 
 (defn today-at
   ([] (today-at 0 0 0 0))
