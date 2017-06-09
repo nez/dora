@@ -14,6 +14,7 @@
             [dora.util :refer :all]
             [formaterr.core :refer :all]
             [nillib.text :refer :all]
+            [environ.core :refer [env]]
             [ring.util.codec :as c])
   (:import org.apache.commons.validator.UrlValidator))
 
@@ -362,12 +363,14 @@
                   :resource %)
        (:distribution (:dataset d))))
 
+(def ^:dynamic *adela-data-collection* (or (env :adela-data-collection) :adela-inventories))
+;;:adela-catalogs ;:adela-inventories;; TODO: cuando entre en vigor el nuevo adela, cambiar a: :adela-inventories
+
 (defn inventory-resources-denormalized
   []
   (mapcat flatten-inventory-dataset
           (mapcat flatten-inventory
-                  (db :adela-inventories;:adela-catalogs ;:adela-inventories;; TODO: cuando entre en vigor el nuevo adela, cambiar a: :adela-inventories
-                      ))))
+                  (db *adela-data-collection*))))
 
 (defn ieda?
   [url]
