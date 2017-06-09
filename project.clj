@@ -40,7 +40,8 @@
                  [formaterr "0.1.0-SNAPSHOT"]]
   :jvm-opts ["-Djava.security.policy=.java.policy" "-Xmx32g"]
   :main dora.server
-  :plugins [[lein-ring "0.9.7"]
+  :plugins [[lein-exec "0.3.6"]
+            [lein-ring "0.9.7"]
             [com.palletops/uberimage "0.4.1"]]
   :repl-options {:init-ns dora.repl
                  :timeout 1800000}
