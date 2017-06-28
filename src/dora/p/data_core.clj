@@ -56,7 +56,9 @@
                 s))
     s))
 
-(def api-catalog []
+(defn api-catalog
+  "Store the collections names in `api-catalog`"
+  []
   (update-db :api-catalog
              (map #(hash-map :endpoint %)
                   (db))))
