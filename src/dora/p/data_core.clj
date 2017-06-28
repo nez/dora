@@ -60,7 +60,8 @@
   "Store the collections names in `api-catalog`"
   []
   (update-db :api-catalog
-             (map #(hash-map :endpoint %)
+             (map #(hash-map :endpoint %
+                             :url (str "https://api.datos.gob.mx/v1/" %))
                   (db))))
 
 (defn flatten-adela-catalogs []
