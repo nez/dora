@@ -56,8 +56,13 @@
                 s))
     s))
 
+(def api-catalog []
+  (update-db :api-catalog
+             (map #(hash-map :endpoint %)
+                  (db))))
 
 (defn flatten-adela-catalogs []
+  "genera las apis adela-datasets y adela-resources"
   (let [datasets (flatten (map (fn [catalogo] (map #(assoc % :slug (:slug catalogo))
                                                   (:dataset catalogo)))
                                (db :adela-catalogs)))
@@ -84,6 +89,7 @@
                 ]))
 
 (defn fusion [] (update-db :data-fusion data-fusion))
+
 (defn data-core []
   (doall-recur
    [(println "updating ckan data to api")
@@ -107,7 +113,9 @@
     (fusion)
     (dc-update)]))
 
-(defn data-core-lite []
+(defn data-core-lite
+  "update ckan and adela data"
+  []
   (doall-recur
    [(update-all-ckan)
     (update-adela)
