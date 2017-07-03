@@ -11,7 +11,8 @@
             [monger.operators :refer :all]
             monger.joda-time
             [nillib.formats :refer :all])
-  (:import [com.mongodb MongoOptions ServerAddress]))
+  (:import [com.mongodb MongoOptions ServerAddress]
+           org.apache.commons.validator.UrlValidator))
 
 (defn get-json
   "GET a JSON endpoint"
@@ -126,3 +127,20 @@
     (doall (map #(db-insert :datasets %) data))
     (doall (map #(db-insert :resources %)
                 (mapcat resources-from-dataset data)))))
+
+(defn valid-url? [url-str]
+  (let [validator (UrlValidator.)]
+    (.isValid validator url-str)))
+
+(defn resource
+  "Find a resource with a URL"
+  ;;TODO if url is invalid but it was to be a url things break
+  [o]
+  (if (map? o)
+    (db-findf :resources o)
+    (if (valid-url? o)
+      (db-findf :resources {:url o})
+      (if-not (empty? o)
+        (or (db-findf :resources {:name o})
+            (db-findf :resources {:id o})
+            (db-find :resources {:dataset_id o}))))))

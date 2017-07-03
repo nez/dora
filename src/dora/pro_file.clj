@@ -15,12 +15,7 @@
             [formaterr.core :refer :all]
             [nillib.text :refer :all]
             [environ.core :refer [env]]
-            [ring.util.codec :as c])
-  (:import org.apache.commons.validator.UrlValidator))
-
-(defn valid-url? [url-str]
-  (let [validator (UrlValidator.)]
-    (.isValid validator url-str)))
+            [ring.util.codec :as c]))
 
 (defn shsh
   "Execute command in shell"
@@ -312,22 +307,25 @@
                             (try-catch (nils-csv-validation-recommendation metadata))
                             (try-catch (has-weird-format-numbers?-recommendation metadata))])])))
 
-(defn resource
-  "Find a resource with a URL"
-  [o]
-  (if (map? o)
-    (db-findf :resources o)
-    (if (valid-url? o)
-      (db-findf :resources {:url o})
-      (if-not (empty? o)
-        (or (db-findf :resources {:name o})
-            (db-findf :resources {:id o})
-            (db-find :resources {:dataset_id o}))))))
+(def resources (db :resources))
+
+(defn find-resource-by-url [url]
+  (first (filter #(= url (:url %))
+                 resources)))
 
 (defn resource-metadata
   "Find stored metadata for a id"
   [id]
   (db-findf :resource-metadata {:id id}))
+
+(def datasets (db :datasets))
+
+(defn find-resources-dataset
+  "Find stored dataset metadata on a resource"
+  [resource]
+  (first (filter #(= (:id %)
+                     (:dataset_id resource))
+                 datasets)))
 
 (defn dataset
   "Given a Resource or dataset name, return its dataset metadata"
@@ -388,8 +386,8 @@
           (inventory-resources-denormalized))))
   ([result analytics-data analytics-data-views todays-broken]
    (try (let [url (:downloadURL (:resource result))
-              resource (resource url)
-              dataset (dataset resource)
+              resource (find-resource-by-url url)
+              dataset (find-resources-dataset resource)
               metadata (resource-metadata (:id resource))
               recommendations (remove string?
                                       (recommendations url metadata (:resource result) todays-broken))]
@@ -424,7 +422,7 @@
           (orphan-resources inventories))))
   ([resource analytics-data analytics-data-views todays-broken]
    (try (let [url (:url resource)
-              dataset (dataset resource)
+              dataset (find-resources-dataset resource)
               metadata (resource-metadata (:id resource))
               recommendations (remove string?
                                       (recommendations url metadata resource todays-broken))]
@@ -456,3 +454,11 @@
           (json (remove-nils (map #(try (dora-view-inventory %)
                                         (catch Exception e))
                                   rsrcs))))))
+
+(defn data-fusion-analytics []
+  (let [data (db :data-fusion)]
+    (println "resources table: " (count (db :resources)))
+    (println "adela inventories table: " (count (db :adela-inventories)))
+    (println "whole data-fusion: " (count data))
+    (println "data-fusion ckan: " (count (filter :ckan data)))
+    (println "data-fusion adela: " (count (filter :adela data)))))
