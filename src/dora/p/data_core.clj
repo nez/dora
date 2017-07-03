@@ -104,7 +104,6 @@
     (update-db :zendesk-organizations all-organizations)
     (update-db :zendesk-satisfaction all-satisfaction)
     (update-db :zendesk-users all-users)
-    (flatten-adela-catalogs)
     (update-adela)
                                         ;(update-db :google_analytics download-data)
     (println "cleaning up old files")
