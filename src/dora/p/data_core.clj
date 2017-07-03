@@ -79,12 +79,11 @@
      (println "resources in adela: " (count (db :adela-resources)))]))
 
 (defn update-adela []
-  (doall-recur [(println "updating catalogs")
-
-                (update-db :adela-catalogs adela-catalogs)
-                                        ;(update-db :adela-plans adela-plans)
-                (println "updating organizations")
+  (doall-recur [(println "updating organizations")
                 (update-db :adela-organizations organizations-req)
+                (println "updating catalogs")
+                (update-db :adela-catalogs adela-catalogs)
+                ;;(update-db :adela-plans adela-plans)
                 (println "updating inventories")
                 (update-db :adela-inventories adela-inventory)
                 (println "flattening catalogs")
