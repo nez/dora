@@ -16,6 +16,7 @@
 (defn get-json
   "GET a JSON endpoint"
   [url]
+  (println "fetching: " url)
   (-> url
       http/get
       :body
