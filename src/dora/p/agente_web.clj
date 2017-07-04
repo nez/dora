@@ -21,6 +21,12 @@
   (do (println "error: " (s/join strs))
       (spit "error-log.log" (str (s/join strs) "\n") :append true)))
 
+(defn info
+  "save to info-log.log"
+  [& strs]
+  (do (println "info: " (s/join strs))
+      (spit "info-log.log" (str (s/join strs) "\n") :append true)))
+
 (def user-agent
   "Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/532.9 (KHTML, like Gecko) Chrome/5.0.307.11 Safari/532.9")
 
@@ -28,9 +34,9 @@
   "Get the status code for a resource while faking the user agent"
   [url]
   (try
-    (error "error 1: " url)
+    (info "checking with fake agent: " url)
     (:status (http/get url {:headers {"user-agent"  user-agent}
-                            :conn-timeout 6000}))
+                            :conn-timeout 5000}))
     (catch org.apache.http.conn.ConnectTimeoutException e
       (db-insert :status {:now (t/now) :url url :status :timeout}))
     (catch Exception e
@@ -46,6 +52,9 @@
     (catch org.apache.http.conn.ConnectTimeoutException e :timeout)
     (catch Exception e (status-with-usr-agent url))))
 
+(defn check-status
+  []
+  (doall (map #(-> % :url status-with-usr-agent) (db :resources))))
 
 (defn get-status-1
   "Funcion para llamar desde jenkins para sacar el status de todos al dia"
