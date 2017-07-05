@@ -2,6 +2,7 @@
   (:require [clojure.java.shell :refer :all]
             [digitalize.core :refer :all]
             [dora.data :refer :all]
+            [dora.p.ckan :refer :all]
             [dora.pro-file :refer :all]
             [dora.p.data-core :refer :all]
             [dora.util :refer :all]
