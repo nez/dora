@@ -297,7 +297,7 @@
 (defn recommendations
   "Generate recommendations from a file url and its metadata"
   [url metadata resource todays-broken]
-  (remove-nils (flatten [(try-catch (broken-link-recommendation url))
+  (remove-nils (flatten [(try-catch (broken-link-recommendation url todays-broken))
                          (try-catch (acento-recommendation url))
                          (try-catch (encoding-recommendation metadata))
                          (try-catch (duplicated-url-recommendation url))
@@ -378,6 +378,7 @@
     false))
 
 (defn dora-view-inventory    ;will expect entries from inventory-resources-denormalized
+  "hace la fusion de datos de los recursos de adela"
   ([]
    (let [analytics  (db :google_analytics)
          analytics-views (db :google_analytics_views)
@@ -411,6 +412,7 @@
             (db :resources))))
 
 (defn dora-view-resources
+  "Hace la fusion de datos para los recursos huerfanos, osea los que estan en ckan pero no en adela"
   ([inventories]
    (let [analytics  (db :google_analytics)
          analytics-views (db :google_analytics_views)
@@ -455,10 +457,11 @@
                                         (catch Exception e))
                                   rsrcs))))))
 
-(defn data-fusion-analytics []
+(defn data-fusion-analytics& []
   (let [data (db :data-fusion)]
     (println "resources table: " (count (db :resources)))
     (println "adela inventories table: " (count (db :adela-inventories)))
     (println "whole data-fusion: " (count data))
-    (println "data-fusion ckan: " (count (filter :ckan data)))
-    (println "data-fusion adela: " (count (filter :adela data)))))
+    (println "data-fusion ckan: " (count (filter #(not (empty? (:resource (:ckan %)))) data)))
+    (println "data-fusion adela: " (count (filter :adela data)))
+    (println "data-fusion ckan & adela: " (count (filter :adela (filter #(not (empty? (:resource (:ckan %)))) data))))))
