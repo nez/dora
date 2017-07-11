@@ -275,6 +275,7 @@
                     (broken {:url url}))))))
 
 (defn broken-today
+  []
   (distinct-by :url
                (db :status {:date-insert {:$gt (t/minus (t/now) (t/days 2))}
                             :status "error"})))
