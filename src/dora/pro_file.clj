@@ -209,12 +209,12 @@
 (defn broken-link-recommendation
   "If the URL was reported as broken today, raise this alert"
   [url todays-broken]
-  (if-let [rec (broken-today url)]
-    (assoc rec :name "La URL no pudo ser leída por el robot"
-           :description "Esto puede significar que la URL está caída, o no sea accesible para robots."
-           :more-info "http://datos.gob.mx/guia/publica/paso-2-1.html"
-           :clave "d01"
-           :categoria "disponibilidad")))
+  (if (not (empty? (filter #(= url %) (map :url todays-broken))))
+    {:name "La URL no pudo ser leída por el robot"
+     :description "Esto puede significar que la URL está caída, cargue demasiado lento, o no sea accesible para robots."
+     :more-info "http://datos.gob.mx/guia/publica/paso-2-1.html"
+     :clave "d01"
+     :categoria "disponibilidad"}))
 
 (def acento-regex #"[áéíóúÁÉÍÓÚñÑ]")
 
