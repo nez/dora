@@ -274,13 +274,10 @@
      (first (filter #(last-day? (:now %))
                     (broken {:url url}))))))
 
-(defn broken-yesterday
-  ([] (filter #(last-2days? (:now %))
-              (broken)))
-  ([url]
-   (if-not (nil? url)
-     (first (filter #(last-2days? (:now %))
-                    (broken {:url url}))))))
+(defn broken-today
+  (distinct-by :url
+               (db :status {:date-insert {:$gt (t/minus (t/now) (t/days 2))}
+                            :status "error"})))
 
 (defn sure-errors []
  (map :url (broken-today)))
