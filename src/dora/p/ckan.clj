@@ -24,7 +24,7 @@
       (json/read-str :key-fn
                      (comp keyword #(clojure.string/replace % " " "_")))))
 
-(def ^:dynamic *ckan-url* "http://datos.gob.mx/busca/api/3/")
+(def ^:dynamic *ckan-url* "https://datos.gob.mx/busca/api/3/")
 
 (defn api
   "make a call on CKAN endpoint"
