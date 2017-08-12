@@ -31,7 +31,7 @@
   [& endpoint]
   (try (:result (get-json (str *ckan-url*
                                (s/join endpoint))))
-       (catch Exception e (println "exception e, ocurred in endpoint: " (s/join endpoint)))))
+       (catch Exception e (println "exception in endpoint: " (s/join endpoint)"\n" e))))
 
 (defn package-list
   "get list of packages"
