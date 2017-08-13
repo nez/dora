@@ -124,11 +124,12 @@
 (defn update-all-ckan
   []
   (let [data (doall (all-ckan))]
-    (db-delete :datasets)
-    (db-delete :resources)
-    (doall (map #(db-insert :datasets %) data))
-    (doall (map #(db-insert :resources %)
-                (mapcat resources-from-dataset data)))))
+    (when-not (empty? data)
+      (db-delete :datasets)
+      (db-delete :resources)
+      (doall (map #(db-insert :datasets %) data))
+      (doall (map #(db-insert :resources %)
+                  (mapcat resources-from-dataset data))))))
 
 (defn valid-url? [url-str]
   (let [validator (UrlValidator.)]

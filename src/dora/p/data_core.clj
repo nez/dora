@@ -45,8 +45,9 @@
 (defn update-db [coll f]
   (try
     (let [data (doall (remove-nils (if (fn? f) (f) f)))]
-      (db-delete coll)
-      (db-insert coll data))
+      (when-not (empty? data)
+        (db-delete coll)
+        (db-insert coll data)))
     (catch Exception e (println "Error updating: " coll "\n\n" e))))
 
 ;; from http://stackoverflow.com/questions/1217131/recursive-doall-in-clojure
