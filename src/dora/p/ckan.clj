@@ -5,6 +5,7 @@
             [clojure.data.json :as json]
             [clojure.string :as s]
             [digitalize.core :refer :all]
+            [environ.core :refer [env]]
             [mongerr.core :refer :all]
             [monger.core :as mg]
             [monger.collection :as mc]
@@ -24,7 +25,8 @@
       (json/read-str :key-fn
                      (comp keyword #(clojure.string/replace % " " "_")))))
 
-(def ^:dynamic *ckan-url* "https://datos.gob.mx/busca/api/3/")
+(def ^:dynamic *ckan-url* (or (env :ckan-url)
+                              "https://datos.gob.mx/busca/api/3/"))
 
 (defn api
   "make a call on CKAN endpoint"
