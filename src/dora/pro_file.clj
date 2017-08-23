@@ -202,14 +202,14 @@
   ([]
    (validate-dgm-batched (to-validate)))
   ([names] (loop [names names]
-             (if (not (empty? names))
+             (if-not (empty? names)
                (validate-dgm (take 100 names))
                (recur (drop 100 names))))))
 
 (defn broken-link-recommendation
   "If the URL was reported as broken today, raise this alert"
   [url todays-broken]
-  (if (not (empty? (filter #(= url %) (map :url todays-broken))))
+  (if (seq (filter #(= url %) (map :url todays-broken)))
     {:name "La URL no pudo ser leída por el robot"
      :description "Esto puede significar que la URL está caída, cargue demasiado lento, o no sea accesible para robots."
      :more-info "http://datos.gob.mx/guia/publica/paso-2-1.html"
@@ -446,6 +446,6 @@
     (println "resources table: " (count (db :resources)))
     (println "adela inventories table: " (count (db :adela-inventories)))
     (println "whole data-fusion: " (count data))
-    (println "data-fusion ckan: " (count (filter #(not (empty? (:resource (:ckan %)))) data)))
+    (println "data-fusion ckan: " (count (filter #(seq (:resource (:ckan %))) data)))
     (println "data-fusion adela: " (count (filter :adela data)))
-    (println "data-fusion ckan & adela: " (count (filter :adela (filter #(not (empty? (:resource (:ckan %)))) data))))))
+    (println "data-fusion ckan & adela: " (count (filter :adela (filter #(seq (:resource (:ckan %))) data))))))

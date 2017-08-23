@@ -268,7 +268,7 @@ www.datos.gob.mx")]]
 (defn genera-pdf-evidencia-pira
   [dias data]
   (let [partitions (int  (/ (count data) dias))]
-    (map #(pdf-evidencia-pira %1 %2)
+    (map pdf-evidencia-pira
          (partition partitions (map :url data))
          (range 1 dias))))
 

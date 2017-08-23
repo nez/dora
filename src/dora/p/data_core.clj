@@ -45,7 +45,7 @@
 (defn update-db [coll f]
   (try
     (let [data (doall (remove-nils (if (fn? f) (f) f)))]
-      (when-not (empty? data)
+      (when (seq data)
         (db-delete coll)
         (db-insert coll data)))
     (catch Exception e (println "Error updating: " coll "\n\n" e))))

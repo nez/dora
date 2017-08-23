@@ -124,7 +124,7 @@
 (defn update-all-ckan
   []
   (let [data (doall (all-ckan))]
-    (when-not (empty? data)
+    (when (seq data)
       (db-delete :datasets)
       (doall (map #(db-insert :datasets %) data))
       (db-delete :resources)
