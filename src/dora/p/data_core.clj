@@ -65,8 +65,9 @@
                              :url (str "https://api.datos.gob.mx/v1/" %))
                   (db))))
 
-(defn flatten-adela-catalogs []
+(defn flatten-adela-catalogs
   "genera las apis adela-datasets y adela-resources"
+  []
   (let [datasets (flatten (map (fn [catalogo] (map #(assoc % :slug (:slug catalogo))
                                                   (:dataset catalogo)))
                                (db :adela-catalogs)))

@@ -441,22 +441,6 @@
   (let [inventories (dora-view-inventory)]
     (concat inventories (dora-view-resources inventories))))
 
-(defn save-fusion-inventory
-  ([] (save-fusion-inventory (inventory-resources-denormalized)))
-  ([results]
-   (map #(try (db-insert :fusion_inventory (dora-view-inventory %))
-              (catch Exception e (db-insert :errors_fusion_inventory
-                                            (assoc % :exception (str e)))))
-        results)))
-
-(defn json-fusion-inventory []
-  (let [rsrcs (inventory-resources-denormalized)
-        n (count rsrcs)]
-    (spit "data-fusion.json"
-          (json (remove-nils (map #(try (dora-view-inventory %)
-                                        (catch Exception e))
-                                  rsrcs))))))
-
 (defn data-fusion-analytics& []
   (let [data (db :data-fusion)]
     (println "resources table: " (count (db :resources)))

@@ -22,7 +22,6 @@
             [dora.data :refer :all]
             [dora.digitalization :refer :all]
             [dora.p.adela :refer :all]
-            [dora.p.buda :refer :all]
             [dora.p.data-core :refer :all]
             [dora.importer :refer :all]
             [dora.pro-file :refer :all]
