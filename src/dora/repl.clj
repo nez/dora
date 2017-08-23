@@ -25,7 +25,6 @@
             [dora.p.buda :refer :all]
             [dora.p.data-core :refer :all]
             [dora.importer :refer :all]
-            [dora.p.download :refer :all]
             [dora.pro-file :refer :all]
             [dora.util :refer :all]
             [dora.p.zendesk :refer :all]

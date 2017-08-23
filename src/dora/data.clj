@@ -11,17 +11,6 @@
             [formaterr.core :refer :all]
             [org.httpkit.client :as http]))
 
-(defn copy
-  "Download 'url' with name 'file'"
-  [url file]
-  (println "downloading: " url)
-  (try
-    (io/copy
-     (:body @(http/get url {:as :stream}))
-     (java.io.File. file))
-    (catch Exception e (spit file (slurp url))))
-  (println "finished with: " url))
-
 (defn directory [& s]
   (apply str "/tmp/" s))
 
