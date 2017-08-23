@@ -28,7 +28,6 @@
             [dora.util :refer :all]
             [dora.p.zendesk :refer :all]
             ;;[dora.refineria :refer :all]
-            ;;[dora.viz :refer :all]
             [environ.core :refer [env]]
             [nillib.text :refer :all]
             [nillib.tipo :refer :all]
